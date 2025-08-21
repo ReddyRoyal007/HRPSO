@@ -1,6 +1,6 @@
 JWT: JSON Web Tokens
 ===================
-Safe way to represent a set of information between two parties check
+Safe way to represent a set of information between two parties check .....
 
 header.payload.signature-xxxx.yyyy.zzzz   //https://jwt.io
 
