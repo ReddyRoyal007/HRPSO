@@ -1,0 +1,240 @@
+Singleton Design pattern:
+=========================
+Singleton pattern belongs to creational Type pattern.
+This pattern is used, when we need to ensure that only one object of particular class need to be created.   
+It provides global access to an instance of an object, and It guarantees that, no more than one instance of that type can ever be created.
+Single thread to access the singleton pattern:
+
+seald public class Logger                //sealed restrict the inheritance 
+    {
+        private static int count = 0;
+        private static Logger logger = null;
+
+        //Private constuctor is ensure that object is not instaniated other than with in the class itself.
+
+        private Logger()
+        { 
+            count++;
+            Console.WriteLine("counter values for this app : " + count.ToString()); 
+        }
+
+        //public property is used to return only onbe instance of the class , learning on the private property
+        public static Logger GetInstence()
+        {
+            if (logger == null)
+            {
+                logger = new Logger();
+            }
+            return logger;
+        }
+        public void printLogger(string log)
+        {
+            Console.WriteLine(log);
+        }
+    }
+      static void Main(string[] args)
+        {
+            Logger emp = Logger.GetInstence();     // to read the static method   className.methodName
+            emp.printLogger("from EMP Logger");
+            Logger prod = Logger.GetInstence();
+            prod.printLogger("from  Product Logger");
+            Console.ReadLine();
+        }
+
+Note: 
+If we declare the constructor as private that class should not inherited due to the protection level. 
+If Private constructor is restricting the inheritance why we need a sealed class?
+Now, if we moved the derived class inside the singleton class (nested class), compile and see, we will not get any errors.
+From here we will create derived calls object and invoke the method, hence violated the singleton principle. Hence we are making the class as ‘Sealed’. (https://www.youtube.com/watch?v=QWrcOmLWi_Q&list=PL6n9fhu94yhUbctIoxoVTrklN3LMwTCmd&index=4)
+
+private constractor : that calss should not be inherited due to protection level
+                      you should not create an instance rather than that class 
+================================================================================================
+Strategy Design Pattern (Behavioral Pattern) (refer link - https://www.youtube.com/watch?v=sdT2LkbrJtc)
+
+Strategy is plan of action designed to achieve a specific goal.
+Strategy Pattern says, program to an Interface and not to an Implementation.
+
+For ex. In BBM Application, for LOB Phone, customers will be having different discount Strategies while buying a phone product.
+If customer is buying a Phone On special vacation day, based on the starttime and endtime different discounts will be applicable.
+
+Strategy 1) 8AM to 12noon -> something 10% discount
+Strategy 2) 12noon to 4pm -> something 20% discount
+Strategy 3) 4pm to 8pm -> something 30% discount
+Strategy 4) After 8pm -> No discount
+
+interface IStrategy
+{
+	int getFinalBill(int BillAmount);
+}
+
+Class LowDiscountStrategy : IStrategy (Strategy 1 8AM to 12noon -> something 10% discount)
+{
+	int IStrategy.getFinalBill(int BillAmount)
+	{
+		return .......
+	}
+}
+
+Class ModerateDiscountStrategy : IStrategy (Strategy 2 12noon to 4pm -> something 20% discount)
+{
+	int IStrategy.getFinalBill(int BillAmount)
+	{
+		return .......
+	}
+}
+
+Class HighDiscountStrategy : IStrategy (Strategy 3 4pm to 8pm -> something 30% discount)
+{
+	int IStrategy.getFinalBill(int BillAmount)
+	{
+		return .......
+	}
+}			
+
+Class NoDiscountStrategy : IStrategy (Strategy 4 No discount)
+{
+	int IStrategy.getFinalBill(int BillAmount)
+	{
+		return .......
+	}
+}
+
+Implementation
+---------------
+public class Phone
+{
+	public string cusotmerName {get; set;}
+	public int BillAmount {get; set;}
+
+	public IStrategy currentStrategy; 
+//Here Phone class uses the Interface instead of concrete class, so it means Program to an interface not to an implementation
+
+	public Phone(IStrategy NewStrategy)
+	{
+		currentStrategy=NewStrategy;
+	}
+	
+	public int getFinalBill()
+	{
+		return currentStrategy.GetFinalBill(this.BillAmount);
+	}
+	
+}
+
+Client
+------
+
+Static void main()
+{
+	Phone objPhone = new Phone(null);
+	objPhone.CustomerName="";
+	objPhone.BillAmount=1000;
+	switch(time)
+	{
+		case 8to12:
+			objPhone.currentStrategy= new LowDiscountStrategy();
+			break;
+		
+		case 12to4:
+			objPhone.currentStrategy= new ModerateDiscountStrategy();
+			break;	
+		so on....
+	}
+	Console.WriteLine("Final Bill "+ objPhone.GetFinalBill());
+}
+================================================================================================
+Factory Design Pattern (Creational Pattern) (refer link : https://www.youtube.com/watch?v=yDEmb5XYc_s )
+------------------------
+Define an Interface for creating an Object, but let subclasses decide which class to instantiate.
+
+This pattern resolve two problems from below example.
+1) Lot of scattered new keyword:    (Problem 1 is solved by introducing class called clsFactoryPattern)
+2) Client is aware of all TV types: (Problem 2 is solved by introducing Interface. So that Client will Not have to directly talk to concrete class)
+									 
+
+if(TVType == "SateliteTV")
+{
+  obj= new ClsSateliteTV();
+}
+if(TVType == "FibeTV")
+{
+  obj= new ClsFibeTV();
+}
+
+Here if we want to create a new TV type as IPTV, again have to recompile a client. So how do we resolve these problem? Factory Design Pattern
+
+Problem 1: to remove all new keyword, create clsFactoryPattern class.
+			ex. class clsFactoryPattern
+			{
+				getTV(TVType tvType);
+			}
+			Depending on the tvType, it creates objects for either ClsSateliteTV or ClsFibeTV, with this all the new keyword from client is removed.
+			
+Problem 2: All the concrete classes i.e. ClsFibeTV, ClsSateliteTV are inherited by Interface, client is only aware of interface.
+			ex. interface ITvType
+			{
+				void printTV();
+			}
+so tomorrow if I add one more class ex. ClsIPTV, client doesn't really want to know what type of TV it's, client will just be knowing Interface(ITvType).
+
+=====================================================================================================================================================	
+Repository Design Pattern
+
+Repository Pattern is used to separate data access layer(DAL) from controller using intermediate layer.
+
+Using an example of an MVC application, & the Entity Framework.
+We use the database context directly inside the controllers. This creates tight coupling between the controller and the data access layer.
+Any change related to the data-access layer can break the controller code.
+
+To implement this pattern, we can either use the approach of having a one-repository per model, which means, each entity of the database will have its own repository or we can use a generic repository, that can be used by all the entities of the database.
+
+For our example, we will be using the generic repository
+---------------------------------------------------------
+//Here TEntity is the generic type that can be any entity of the database.
+
+public class GenericRepository<TEntity> : IGenericRepository<TEntity>         //  where TEntity is class
+{
+	private DatabaseEntities dbContext;
+	
+	public GenericRepository(DatabaseEntities _dbContext)
+	{
+		dbContext=_dbContext;
+	}
+}
+=====================================================================================================================================================	
+Facade Design Pattern (https://www.youtube.com/watch?v=Ah3ig3ysLZA)
+
+Answers in different way:
+	- Facade hides the complexities of the system and provides an interface to the client from where the client can access the system.
+	- The Facade design pattern simplifies the interface to a complex system; because it is usually composed of all the classes which make up 
+	  the subsystems of the complex system.
+
+Ex1: of BBM Application:
+	During Product Qualification:
+		Complex systems : Postal code verification, 
+						  Address verification based on Postal code, 
+						  List out the no. of addresses based on postal code for that product
+    How Facade design pattern simplifies the interface to a complex systems:
+    Client submit Just Postal code -> Facade design pattern will take this request to all these complex systems.
+
+Ex:2: During the AddtoCart:
+
+                        The subsystem cart-> GetItemDetails 
+                        The subsystem cart-> CheckItemAvailability
+                        The subsystem cart-> LockItemInStock
+                        The subsystem cart-> AddItemtoCart
+
+     During the place Order:
+                         SubSytemTax: GetTaxbyState
+                         SubSytemTax: ApplyTax
+                         SubSytem WAllet: GEtUserBalence
+                         Sytem Address: GetAddressDetails 
+                         Sytem Order: PlaceOrder
+
+                    
+        
+     					
+
+
+

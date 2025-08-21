@@ -1,0 +1,29 @@
+Appool in IIS:
+================
+An Internet Information Services (IIS) application pool is a set of URLs that is routed to one or more worker processes. 
+Application pools responsible for to isolate one or more applications into their own process.
+
+Key Points:
+ Provides isolation between different web applications.
+ Every web application has individual worker process.
+ Improve manageability of web application.
+ Provides better performance.
+
+Configuring the Application Pool:
+   Recycling
+   Performance
+   Health
+   Identity
+How Recycling Process initiates: 
+You need not to worry about the application performance while recycling process. This process is transparent from client. When IIS conduct recycling, it invokes a new worker process first, and then shut down the old worker process.
+
+Advantages of using IIS recycling feature:
+  All the clients can connect to IIS server, and every requests will be handled without downtime.
+  There is no connection loss.
+  It is a faster operation than IISRESET to initialize system resource (memory).
+
+Disadvantage of IIS Reset
+ HTTP.SYS will lose existing client-connections after running IISRESET.
+ All incoming requests will need to establish new connections again.
+ Web browsers can’t connect the IIS server during restarting IIS means all requests will be missed.
+ A worker process can’t keep any data – cached objects & binaries

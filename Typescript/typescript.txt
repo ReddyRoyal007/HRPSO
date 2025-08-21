@@ -1,0 +1,116 @@
+Never:
+never is the return type for a function expression or an arrow function expression that always throws an exception or one that never returns.
+function error(message: string): never {
+    throw new Error(message);
+}
+
+Tuple destructuring #
+Tuples may be destructured like arrays; the destructuring variables get the types of the corresponding tuple elements
+
+let tuple: [number, string, boolean] = [7, "hello", true];
+
+let [a, b, c] = tuple; // a: number, b: string, c: boolean
+let [a, b, c, d] = tuple; // Error, no element at index 3
+
+Interface:
+
+interface Shape {
+    color: string;
+}
+
+interface PenStroke {
+    penWidth: number;
+}
+
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
+
+let square = {} as Square;
+square.color = "blue";
+square.sideLength = 10;
+square.penWidth = 5.0;
+
+
+Class:
+
+class Animal {
+    move(distanceInMeters: number = 0) {
+        console.log(`Animal moved ${distanceInMeters}m.`);
+    }
+}
+
+class Dog extends Animal {
+    bark() {
+        console.log('Woof! Woof!');
+    }
+}
+
+const dog = new Dog();
+dog.bark();
+dog.move(10);
+dog.bark();
+
+
+Functions:
+----------
+function add(x, y) {
+    return x + y;
+}                                                    // Named function
+
+let myAdd = function(x, y) { return x + y; };        // Anonymous function
+
+function add(x: number, y: number): number {         // with return type
+    return x + y;
+}
+
+let myAdd = function(x: number, y: number): number { return x + y; }; // with return type
+
+
+Generics
+----------
+function identity(arg: any): any {
+    return arg;
+}
+
+let output = identity("myString");         // type of output will be 'string'
+
+function identity<T>(arg: T): T {
+    return arg;
+}
+let output = identity<string>("myString");  // type of output will be 'string'
+
+Enums
+--------
+const enum Direction {
+     Up,
+     Down,
+     Left,
+     Right,
+}
+let directions = [Direction.Up, Direction.Down, Direction.Left, Direction.Right]
+
+
+Intersection Types #
+An intersection type combines multiple types into one. This allows you to add together existing types to get a single type that has all the features you need. For example, Person & Serializable & Loggable is a Person and Serializable and Loggable. That means an object of this type will have all members of all three types
+
+
+--strictNullChecks, an optional parameter automatically adds | undefined
+
+for..of vs. for..in statements #
+Both for..of and for..in statements iterate over lists; the values iterated on are different though, for..in returns a list of keys on the object being iterated, whereas for..of returns a list of values of the numeric properties of the object being iterated
+
+let list = [4, 5, 6];
+
+for (let i in list) {
+    console.log(i);           // "0", "1", "2", 
+}
+
+for (let i of list) {
+    console.log(i);           // "4", "5", "6"
+}
+
+
+
+
+
