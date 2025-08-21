@@ -1,0 +1,58 @@
+JWT: JSON Web Tokens
+===================
+Safe way to represent a set of information between two parties
+
+header.payload.signature-xxxx.yyyy.zzzz   //https://jwt.io
+
+jwt.sign(payload, secretOrprivatekey,[options,callback])   // it is used to create JWT token
+jwt.verify(token, secretOrprivatekey,[options,callback])   // it is to verify the token
+
+npm install jsonwebtoken --save    // from server side
+
+
+how to store the token in browser?
+localStorage.setItem('token', res.token)
+
+how to navigate or redirect to the aonther page?
+this._router.navigate(['/special'])
+
+ng g guard auth  //to generate the guard with name auth
+
+LoggedIn(){
+return localStorage.getItem('token')
+}
+constroctor(private _aut: authenticateService, private _router: Router)
+{}
+canActivate():boolean{
+if(this._aut.LoggedIn()){
+
+return true}
+else{
+this._router.naviagte(['/login'])
+return false
+}
+}
+
+To activate this gaurd in the routers config..
+consts router: Rotes[{path:'', redirectTo: '/home',pathMatch: 'full'},
+                     {path: 'special', component:SplCompnnet, canActivate: [AuthGuard]}]    // if here authGuard is true it will alloed to special
+
+from console , how we will create a token?
+localStorage.setItem('token', 'Reddy')
+
+To verify the token in server, we will send the token from browser to the server by using httpIntercepter. to do that
+ng g s tokeninterceptor   //  to create aservice
+impot {HttpInterceptor} from '@angular/common/http'
+let authSerrvice =this.injector.get(authService);
+intercept(req, next)
+{
+  let tokenizedReq=req.clone({
+    setHeaders: {
+     Authorization: 'Bearer xx.yy.zz'    Or  `Bearer ${authSerrvice.getToken()}`
+                }})
+ return next.handle(tokenizedReq)
+}
+
+
+
+
