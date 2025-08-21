@@ -1,0 +1,44 @@
+								OOPS	
+The OOP prescribed a set of rules that has to be satisfied by language to be called as ‘Object Oriented’ those are called 
+
+	1.	Encapsulation 
+	2.	Abstraction 
+	3.	Inheritance 
+	4.	Polymorphism
+
+What is Instance Members/ Non static members? 
+The members of class which required object of class for the initialization/execution was known as ‘Instance members’.
+
+
+What is the difference between constants and read-only and dynamic?
+Constant : Constant variables are declared and initialized at compile time. The value can't be changed afterward since it is static by default.  
+Read-only: Read-only is used only when we want to assign the value at run time
+Dynamic  : it will not check the Type at compile time, it will check at run time, dynamic d=10;
+
+
+Static vs private vs copy constructor?
+Copy constructor:Copy constructor is a parameterized constructor that contains a parameter of same class type is called as copy constructor.  
+                Main purpose of copy constructor is to initialize new instance to the values of an existing instance.(copying variables from another object )
+
+                employee emp1 = new employee("Aadhya", 07);     // Create a new employee object.
+		employee emp2 = new employee(emp1);             // here is emp1 details is copied to emp2
+
+private constructor: private constructor is used to prevent a class to be instantiated. 
+		     But, If a class has other public constructors, then that can be instantiated. OR
+                     Private constructor is ensuring that object is not instantiated other than with in the class itself
+		     It provides an implementation of a singleton class pattern
+
+		 public static int count;
+                 private employee(){}
+		
+		 employee e=new employee();                  // Error
+		 Console.WriteLine(employee.count = 500);    // 500
+
+Static constructor: It is used to initialize static members of a class. It is called by CLR, not by creating instance of the class. 
+	            It is called when class is loaded.(it will be invoked only once for all of the instances of the class)
+	            It cannot be explicitly called by code. Static constructor has no parameter. A class can have only one static constructor.
+
+ 	       static employee(){
+            	 Console.WriteLine("Static Constructor");  }
+
+  
